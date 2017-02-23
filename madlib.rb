@@ -3,7 +3,6 @@ class Madlib < Formula
   homepage "https://madlib.incubator.apache.org/"
   url "https://github.com/apache/incubator-madlib/archive/rel/v1.9.1.tar.gz"
   sha256 "60ffb6bb2c41895330e62b3eea135ebdd42ac88c34db9f016a151795b3dbbcbc"
-
   head "https://github.com/apache/incubator-madlib.git"
 
   bottle do
@@ -40,11 +39,6 @@ class Madlib < Formula
     cause "See http://jira.madlib.net/browse/MADLIB-865"
   end
 
-  fails_with :llvm do
-    build 5666
-    cause "See http://jira.madlib.net/browse/MADLIB-865"
-  end
-
   # See https://github.com/apache/incubator-madlib/pull/76
   patch :DATA
 
@@ -72,10 +66,7 @@ class Madlib < Formula
     # Versions/<current version>/bin. Homebrew won't link
     # bin/madpack and, even if it did, madpack would not find
     # its dependencies. Hence, we create a shim script.
-    (bin/"madpack").write <<-EOS.undent
-      #!/bin/bash
-      exec "#{prefix}/Current/bin/madpack" "$@"
-    EOS
+    bin.write_exec_script("#{prefix}/Current/bin/madpack")
   end
 
   def caveats; <<-EOS.undent
